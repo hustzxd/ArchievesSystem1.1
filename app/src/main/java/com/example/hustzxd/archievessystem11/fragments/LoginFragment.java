@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -100,6 +101,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onResponse(String s) {//s为请求返回的字符串数据
                         Log.i("sss-response", s);
+                        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
