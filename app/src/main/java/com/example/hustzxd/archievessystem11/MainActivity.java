@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.hustzxd.archievessystem11.constant.Constant;
+import com.example.hustzxd.archievessystem11.fragments.CheckFragment;
 import com.example.hustzxd.archievessystem11.fragments.HelloFragment;
 import com.example.hustzxd.archievessystem11.fragments.LoginFragment;
 
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity
     private ImageView mImageView;
     private LoginFragment mLoginFragment;
     private HelloFragment mHelloFragment;
+    private CheckFragment mCheckFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,22 +100,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
         int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (id) {
+            case R.id.nav_check:
+                if (mCheckFragment == null) {
+                    mCheckFragment = new CheckFragment();
+                }
+                transaction.replace(R.id.fragment_content, mCheckFragment).commit();
+                break;
+            default:
+                break;
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

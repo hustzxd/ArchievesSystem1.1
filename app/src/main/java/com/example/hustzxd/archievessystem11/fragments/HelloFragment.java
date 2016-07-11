@@ -94,6 +94,11 @@ public class HelloFragment extends Fragment implements View.OnClickListener {
         MyApplication.getmQueues().add(request);
     }
 
+    /**
+     * 登出操作是，第一次返回volleyError错误，第二次可以登出成功？？？
+     *
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
