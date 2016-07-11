@@ -2,7 +2,9 @@ package com.example.hustzxd.archievessystem11.fragments;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -34,6 +37,9 @@ public class HelloFragment extends Fragment implements View.OnClickListener {
 
     private TextView mNameTv;
     private Button mLogoutBtn;
+    private ProgressBar mProgressBar;
+
+    private LoginFragment mLoginFragment;
 
 
     @Nullable
@@ -43,6 +49,7 @@ public class HelloFragment extends Fragment implements View.OnClickListener {
 
         mNameTv = (TextView) rootView.findViewById(R.id.tv_username);
         mLogoutBtn = (Button) rootView.findViewById(R.id.btn_logout);
+        mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 
         mNameTv.setText(Constant.username);
 
@@ -59,7 +66,8 @@ public class HelloFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onResponse(String s) {//s为请求返回的字符串数据
                         Log.i("sss-response", s);
-                        Utils.toast(getActivity(), "登出成功,返回到登录界面");
+                        Utils.toast(getActivity(), "登出成功,3秒后返回到登录界面");
+                        new jumpToLoginDelay().execute(3000);//参数为延迟的时间
                     }
                 },
                 new Response.ErrorListener() {
@@ -105,6 +113,55 @@ public class HelloFragment extends Fragment implements View.OnClickListener {
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * <Params, Progress, Result>
+     */
+    private class jumpToLoginDelay extends AsyncTask<Integer, Void, Void> {
+
+        /**
+         * 任务前更新UI，等待进度条显示
+         */
+        @Override
+        protected void onPreExecute() {
+            mProgressBar.setVisibility(View.VISIBLE);
+            super.onPreExecute();
+        }
+
+        /**
+         * 子线程，延迟一段时间 params[0]
+         *
+         * @param params params[0]为延迟时间，单位ms
+         * @return
+         */
+        @Override
+        protected Void doInBackground(Integer... params) {
+            try {
+                Thread.sleep(params[0]);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        /**
+         * 子线程执行完毕，返回UI线程，更新UI
+         * 设置进度条隐藏
+         *
+         * @param aVoid
+         */
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mProgressBar.setVisibility(View.GONE);
+            Utils.toast(getActivity(), "跳转到login");
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            if (mLoginFragment == null) {
+                mLoginFragment = new LoginFragment();
+            }
+            transaction.replace(R.id.fragment_content, mLoginFragment).commit();
         }
     }
 }
