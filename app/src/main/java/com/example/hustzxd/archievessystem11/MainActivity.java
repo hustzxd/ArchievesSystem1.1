@@ -17,6 +17,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.hustzxd.archievessystem11.constant.Constant;
+import com.example.hustzxd.archievessystem11.fragments.HelloFragment;
 import com.example.hustzxd.archievessystem11.fragments.LoginFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity
     private View mHeadView;
     private ImageView mImageView;
     private LoginFragment mLoginFragment;
+    private HelloFragment mHelloFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,10 +124,17 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = fm.beginTransaction();
         switch (v.getId()) {
             case R.id.iv_user_img:
-                if (mLoginFragment == null) {
-                    mLoginFragment = new LoginFragment();
+                if (Constant.isLogin) {
+                    if (mHelloFragment == null) {
+                        mHelloFragment = new HelloFragment();
+                    }
+                    transaction.replace(R.id.fragment_content, mHelloFragment);
+                } else {
+                    if (mLoginFragment == null) {
+                        mLoginFragment = new LoginFragment();
+                    }
+                    transaction.replace(R.id.fragment_content, mLoginFragment);
                 }
-                transaction.replace(R.id.fragment_content, mLoginFragment);
                 transaction.commit();
                 Toast.makeText(getApplicationContext(), "login", Toast.LENGTH_SHORT).show();
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

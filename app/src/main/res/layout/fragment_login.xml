@@ -1,91 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:orientation="vertical">
+              android:orientation="vertical"
+    >
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/ly_username"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="50dp"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <AutoCompleteTextView
+            android:id="@+id/et_username"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/et_username"
-                    android:layout_width="160dip"
-                    android:layout_height="40.5dip"
-                    android:ems="10"
-                    android:hint="@string/user_hint"
-                    android:inputType="text"
-                    android:textSize="12dip"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/regist"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/et_password"
-                    android:layout_width="160dip"
-                    android:layout_height="40.5dip"
-                    android:hint="@string/password_hint"
-                    android:inputType="textPassword"
-                    android:textSize="12dip"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/find"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/remember"
-                    android:textSize="10dip"/>
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/login"
-                    android:textSize="10dip"/>
-            </LinearLayout>
-        </LinearLayout>
+            android:hint="用户名"
+            android:inputType="text"
+            android:lines="1"
+            android:singleLine="true"/>
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp">
 
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="100dip"
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="32dp"
-            android:text="@string/submit"/>
-    </RelativeLayout>
+            android:hint="@string/password_hint"
+            android:inputType="textPassword"
+            />
+    </LinearLayout>
+
+
+    <com.snad.loadingbutton.LoadingButton
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="30dp"
+        android:background="@drawable/click_bg"
+        app:pbLoadingText=""
+        app:pbProgressColor="#F9D8FB"
+        app:pbText="登 录"
+        app:pbTextColor="#FFFFFF"
+        app:pbTextSize="16sp"
+        />
 
 
 </LinearLayout>

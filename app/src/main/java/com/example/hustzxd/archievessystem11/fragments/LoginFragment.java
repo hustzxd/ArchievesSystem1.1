@@ -1,6 +1,8 @@
 package com.example.hustzxd.archievessystem11.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -8,7 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -19,8 +21,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.hustzxd.archievessystem11.R;
+import com.example.hustzxd.archievessystem11.Utils.Utils;
 import com.example.hustzxd.archievessystem11.VolleyUtils.MyApplication;
 import com.example.hustzxd.archievessystem11.constant.Constant;
+import com.snad.loadingbutton.LoadingButton;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,11 +36,12 @@ import java.util.Map;
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
 
-    private EditText mUserNameEt;
-    private EditText mPasswordEt;
-    private Button mLoginBtn;
+    private HelloFragment mHelloFragment;
 
-    private String mUserName;
+    private AutoCompleteTextView mUserNameEt;
+    private EditText mPasswordEt;
+    private LoadingButton mLoginBtn;
+
     private String mPassword;
 
     @Nullable
@@ -44,13 +49,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_login, container, false);
 
-        mUserNameEt = (EditText) rootView.findViewById(R.id.et_username);
+        mUserNameEt = (AutoCompleteTextView) rootView.findViewById(R.id.et_username);
         mPasswordEt = (EditText) rootView.findViewById(R.id.et_password);
-        mLoginBtn = (Button) rootView.findViewById(R.id.btn_login);
-
-
+        mLoginBtn = (LoadingButton) rootView.findViewById(R.id.btn_login);
         mLoginBtn.setOnClickListener(this);
-
 
         return rootView;
     }
@@ -60,10 +62,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_login:
 
-                mUserName = mUserNameEt.getText().toString();
+                Constant.username = mUserNameEt.getText().toString();
                 mPassword = mPasswordEt.getText().toString();
 
-                if (TextUtils.isEmpty(mUserName)) {
+                if (TextUtils.isEmpty(Constant.username)) {
                     mUserNameEt.setError("请输入用户名");
                     return;
                 }
@@ -71,9 +73,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     mPasswordEt.setError("请输入密码");
                     return;
                 }
-                Log.i("sss", "Login");
-
                 volleyPost();
+                mLoginBtn.showLoading();
                 break;
             default:
                 break;
@@ -94,20 +95,67 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private void volleyPost() {
 
 
-        String url = Constant.URL_HEAD + "mobile_login.action";
+        String url = Constant.URL_LOGIN;
         Log.d("sss-url", url);
         StringRequest request = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String s) {//s为请求返回的字符串数据
-                        Log.i("sss-response", s);
-                        Toast.makeText(getActivity(), s, Toast.LENGTH_SHORT).show();
+
+                        Utils.log("登录返回正确", s);
+                        if ("true".equals(s)) {
+                            Toast.makeText(getActivity(), "登录成功", Toast.LENGTH_SHORT).show();
+                            Constant.isLogin = true;
+
+                            mLoginBtn.setText("登录成功");
+                            mLoginBtn.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mLoginBtn.showButtonText();
+                                    FragmentManager fm = getFragmentManager();
+                                    FragmentTransaction transaction = fm.beginTransaction();
+                                    if (mHelloFragment == null) {
+                                        mHelloFragment = new HelloFragment();
+                                    }
+                                    transaction.replace(R.id.fragment_content, mHelloFragment);
+                                    transaction.commit();
+                                }
+                            }, 1000);
+
+                        } else if ("false".equals(s)) {
+                            mLoginBtn.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Utils.toast(getActivity(), "用户名或密码错误");
+                                    mLoginBtn.setText("登录失败，重新登录");
+                                    mLoginBtn.showButtonText();
+                                }
+                            }, 1000);
+
+                        } else {
+                            mLoginBtn.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mLoginBtn.setText("未知，重新登录");
+                                    mLoginBtn.showButtonText();
+                                    Utils.toast(getActivity(), "未知错误");
+                                }
+                            }, 1000);
+                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         Log.i("sss-errorResponse", volleyError.toString());
+                        Utils.toast(getActivity(), volleyError.getMessage());
+                        mLoginBtn.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mLoginBtn.setText("登录失败，重新登录");
+                                mLoginBtn.showButtonText();
+                            }
+                        }, 1000);
                     }
                 }) {
             @Override
@@ -124,14 +172,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 //将请求参数名与参数值放入map中
-                map.put(Constant.USERNAME, mUserName);
+                map.put(Constant.USERNAME, Constant.username);
                 map.put(Constant.PASSWORD, mPassword);
                 map.put(Constant.MOBILE, Constant.TRUE);
                 return map;
             }
         };
         //设置请求的Tag标签，可以在全局请求队列中通过Tag标签进行请求的查找
-        request.setTag("testPost");
+        request.setTag("loginPost");
         //将请求加入全局队列中
         MyApplication.getmQueues().add(request);
     }
