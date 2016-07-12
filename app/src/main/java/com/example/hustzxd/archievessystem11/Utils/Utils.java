@@ -9,7 +9,7 @@ import android.widget.Toast;
  * Created by buxiaoyao on 2016/7/8.
  */
 public class Utils {
-    public static final String TAG = "zxd";
+    public static final String TAG = "sss";
 
     public static void toast(Context c, String s) {
         Toast.makeText(c, s, Toast.LENGTH_LONG).show();
