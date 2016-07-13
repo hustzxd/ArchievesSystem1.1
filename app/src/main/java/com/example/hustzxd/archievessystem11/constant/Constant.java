@@ -6,7 +6,6 @@ package com.example.hustzxd.archievessystem11.constant;
  */
 public class Constant {
     public static boolean isLogin = false;
-    public static String username;
 
     private static final String URL_HEAD = "http://202.114.15.107:8080//";
 
