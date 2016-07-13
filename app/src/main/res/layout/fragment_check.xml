@@ -15,4 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="开始盘点"/>
+
+    <ListView
+        android:id="@+id/list_view_epc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
 </LinearLayout>

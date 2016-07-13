@@ -10,10 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.hustzxd.archievessystem11.Bean.TagInfo;
 import com.example.hustzxd.archievessystem11.R;
 import com.example.hustzxd.archievessystem11.Utils.Utils;
+import com.example.hustzxd.archievessystem11.adapter.MyAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 盘点的fragment
@@ -25,6 +31,9 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
     private Button mCheckBtn;
     private Handler mHandler;
     private TextView mCheckTv;
+    private ListView mListView;
+    private MyAdapter mMyAdapter;
+    private List<TagInfo> mTagInfoList;
 
     @Nullable
     @Override
@@ -34,10 +43,12 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
 
         mHandler = new MainHandler();
         reader.m_handler = mHandler;
+        mTagInfoList = new ArrayList<>();
+        mMyAdapter = new MyAdapter(getActivity(), mTagInfoList);
 
         mCheckBtn = (Button) rootView.findViewById(R.id.btn_check);
         mCheckTv = (TextView) rootView.findViewById(R.id.tv_check);
-
+        mListView = (ListView) rootView.findViewById(R.id.list_view_epc);
 
         mCheckBtn.setOnClickListener(this);
         return rootView;
@@ -66,6 +77,12 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
             if (msg.what == reader.msgreadepc) {
                 String data = (String) msg.obj;
                 mCheckTv.setText(data);
+                TagInfo tagInfo = new TagInfo();
+                tagInfo.setEPC(data);
+                tagInfo.setNum(1);
+                mTagInfoList.add(tagInfo);
+                mMyAdapter.setList(mTagInfoList);
+                mListView.setAdapter(mMyAdapter);
             }
             super.handleMessage(msg);
         }

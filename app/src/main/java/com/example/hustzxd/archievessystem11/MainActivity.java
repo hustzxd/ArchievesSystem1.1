@@ -11,16 +11,27 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.example.hustzxd.archievessystem11.Utils.Utils;
+import com.example.hustzxd.archievessystem11.VolleyUtils.MyApplication;
 import com.example.hustzxd.archievessystem11.constant.Constant;
 import com.example.hustzxd.archievessystem11.fragments.CheckFragment;
 import com.example.hustzxd.archievessystem11.fragments.HelloFragment;
 import com.example.hustzxd.archievessystem11.fragments.LoginFragment;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -40,13 +51,19 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        if (fab != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!Constant.isLogin) {
+                        Snackbar.make(view, "请先登录", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    } else {
+                        sendTag();
+                    }
+                }
+            });
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -62,6 +79,42 @@ public class MainActivity extends AppCompatActivity
 
         mImageView.setOnClickListener(this);
 
+    }
+
+    private void sendTag() {
+
+        String url = Constant.URL_SEND_TAG;
+        Log.d("sss-url", url);
+        StringRequest request = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {//s为请求返回的字符串数据
+                        Log.i("sss-response", s);
+                        Utils.toast(getApplicationContext(), "发送标签EPC成功");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Log.i("sss-errorResponse", volleyError.toString());
+                    }
+                }) {
+            //改写 cookie
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                if (MyApplication.cookies != null && MyApplication.cookies.length() > 0) {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put("cookie", MyApplication.cookies);
+                    Log.d("sss-cookie", headers.toString());
+                    return headers;
+                }
+                return super.getHeaders();
+            }
+        };
+        //设置请求的Tag标签，可以在全局请求队列中通过Tag标签进行请求的查找
+        request.setTag("sendTagPost");
+        //将请求加入全局队列中
+        MyApplication.getmQueues().add(request);
     }
 
     @Override
