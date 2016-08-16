@@ -9,9 +9,9 @@ public class Constant {
 
     public static boolean isLogin = false;
 
-    private static final String URL_HEAD = "http://202.114.15.107:8080//";
+    private static final String URL_HEAD = "http://202.114.15.113:8081/php_project/";
 
-    public static final String URL_LOGIN = URL_HEAD + "mobile_login.action";
+    public static final String URL_LOGIN = URL_HEAD + "login.php";
     public static final String URL_LOGOUT = URL_HEAD + "logout.action";
 
     public static final String URL_SEND_TAG = URL_HEAD + "send_tag.action";
