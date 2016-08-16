@@ -60,7 +60,9 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
             case R.id.btn_check:
                 //进行盘点
                 Utils.log("ddd", "check");
-                reader.InventoryLables();
+//                reader.InventoryLables();
+                reader.StopLoop();
+                reader.InventoryLablesLoop();
                 break;
             default:
                 break;
@@ -80,11 +82,29 @@ public class CheckFragment extends Fragment implements View.OnClickListener {
                 TagInfo tagInfo = new TagInfo();
                 tagInfo.setEPC(data);
                 tagInfo.setNum(1);
-                mTagInfoList.add(tagInfo);
+//                mTagInfoList.add(tagInfo);
+                mTagInfoList = updateList(mTagInfoList, tagInfo);
                 mMyAdapter.setList(mTagInfoList);
                 mListView.setAdapter(mMyAdapter);
             }
             super.handleMessage(msg);
         }
     }
+
+    private List<TagInfo> updateList(List<TagInfo> tagInfoList, TagInfo tagInfo) {
+        boolean isNew = true;
+        String newEPC = tagInfo.getEPC();
+        for (int i = 0; i < tagInfoList.size(); i++) {
+            if (tagInfoList.get(i).getEPC().equals(newEPC)) {
+                tagInfoList.get(i).setNum(tagInfoList.get(i).getNum() + 1);
+                isNew = false;
+                break;
+            }
+        }
+        if (isNew) {
+            tagInfoList.add(tagInfo);
+        }
+        return tagInfoList;
+    }
+
 }
