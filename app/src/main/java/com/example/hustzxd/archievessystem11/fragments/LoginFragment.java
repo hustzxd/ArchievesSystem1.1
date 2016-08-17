@@ -26,6 +26,9 @@ import com.example.hustzxd.archievessystem11.VolleyUtils.MyApplication;
 import com.example.hustzxd.archievessystem11.constant.Constant;
 import com.snad.loadingbutton.LoadingButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -103,48 +106,48 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     public void onResponse(String s) {//s为请求返回的字符串数据
 
                         Utils.log("登录返回正确", s);
-                        if ("true".equals(s)) {
-                            Toast.makeText(getActivity(), "登录成功", Toast.LENGTH_SHORT).show();
-                            Constant.isLogin = true;
+                        try {
+                            JSONObject resultJson = new JSONObject(s);
+                            boolean result = resultJson.getBoolean("logstatus");
+                            Utils.log("result", result + "");
+                            if (result) {
+                                Toast.makeText(getActivity(), "登录成功", Toast.LENGTH_SHORT).show();
+                                Constant.isLogin = true;
 
-                            mLoginBtn.setText("登录成功");
-                            mLoginBtn.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mLoginBtn.showButtonText();
-                                    FragmentManager fm = getFragmentManager();
-                                    FragmentTransaction transaction = fm.beginTransaction();
-                                    if (mHelloFragment == null) {
-                                        mHelloFragment = new HelloFragment();
+                                mLoginBtn.setText("登录成功");
+                                mLoginBtn.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mLoginBtn.showButtonText();
+                                        FragmentManager fm = getFragmentManager();
+                                        FragmentTransaction transaction = fm.beginTransaction();
+                                        if (mHelloFragment == null) {
+                                            mHelloFragment = new HelloFragment();
+                                        }
+                                        transaction.replace(R.id.fragment_content, mHelloFragment);
+                                        transaction.commit();
                                     }
-                                    transaction.replace(R.id.fragment_content, mHelloFragment);
-                                    transaction.commit();
-                                }
-                            }, 1000);
+                                }, 1000);
+                            } else {
+                                mLoginBtn.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Utils.toast(getActivity(), "用户名或密码错误");
+                                        mLoginBtn.setText("登录失败，重新登录");
+                                        mLoginBtn.showButtonText();
+                                    }
+                                }, 1000);
 
-                        } else if ("false".equals(s)) {
-                            mLoginBtn.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Utils.toast(getActivity(), "用户名或密码错误");
-                                    mLoginBtn.setText("登录失败，重新登录");
-                                    mLoginBtn.showButtonText();
-                                }
-                            }, 1000);
-
-                        } else {
-                            mLoginBtn.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mLoginBtn.setText("未知，重新登录");
-                                    mLoginBtn.showButtonText();
-                                    Utils.toast(getActivity(), "未知错误");
-                                }
-                            }, 1000);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                     }
-                },
-                new Response.ErrorListener() {
+                }
+                ,
+                new Response.ErrorListener()
+
+                {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         Log.i("sss-errorResponse", volleyError.toString());
@@ -157,16 +160,22 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                             }
                         }, 1000);
                     }
-                }) {
-            @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                Response<String> superResponse = super.parseNetworkResponse(response);
-                Map<String, String> responseHeaders = response.headers;
-                String rawCookies = responseHeaders.get("Set-Cookie");
-                MyApplication.cookies = rawCookies.substring(0, rawCookies.indexOf(";"));
-                Log.d("sss", "sessionid---" + MyApplication.cookies);
-                return superResponse;
-            }
+                }
+        )
+
+        {
+
+            //删除 2016/8/16
+
+//            @Override
+//            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+//                Response<String> superResponse = super.parseNetworkResponse(response);
+//                Map<String, String> responseHeaders = response.headers;
+//                String rawCookies = responseHeaders.get("Set-Cookie");
+//                MyApplication.cookies = rawCookies.substring(0, rawCookies.indexOf(";"));
+//                Log.d("sss", "sessionid---" + MyApplication.cookies);
+//                return superResponse;
+//            }
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
@@ -181,6 +190,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         //设置请求的Tag标签，可以在全局请求队列中通过Tag标签进行请求的查找
         request.setTag("loginPost");
         //将请求加入全局队列中
-        MyApplication.getmQueues().add(request);
+        MyApplication.getmQueues().
+
+                add(request);
     }
 }
