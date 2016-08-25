@@ -7,29 +7,28 @@
             android:icon="@drawable/check"
             android:title="盘点"/>
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery"/>
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow"/>
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools"/>
+            android:id="@+id/nav_scan"
+            android:icon="@drawable/scan"
+            android:title="扫描"/>
+
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="权证管理">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share"/>
+                android:id="@+id/nav_jieshou"
+                android:title="接收"/>
+            <!--android:icon="@drawable/ic_menu_share"-->
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send"/>
+                android:id="@+id/nav_jiechu"
+                android:title="借出"/>
+            <!--android:icon="@drawable/ic_menu_send"-->
+            <item
+                android:id="@+id/nav_guihuan"
+                android:title="归还"/>
+            <item
+                android:id="@+id/nav_xiaohui"
+                android:title="销毁"/>
         </menu>
     </item>
 

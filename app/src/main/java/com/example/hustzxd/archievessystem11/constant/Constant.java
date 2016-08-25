@@ -12,13 +12,15 @@ public class Constant {
     private static final String URL_HEAD = "http://202.114.15.92:80/php_project/";
 
     public static final String URL_LOGIN = URL_HEAD + "m_login.php";
-    public static final String URL_LOGOUT = URL_HEAD + "logout.action";
+    public static final String URL_RECEIVE_TWO = URL_HEAD + "m_receive.php";
+    public static final String URL_RECEIVE_ONE = URL_HEAD + "m_receive_1.php";
+    public static final String URL_LOAN = URL_HEAD + "m_loan.php";
+    public static final String URL_BACK = URL_HEAD + "m_back.php";
+    public static final String URL_DESTROY = URL_HEAD + "m_destroy.php";
 
-    public static final String URL_SEND_TAG = URL_HEAD + "send_tag.action";
+    public static final String URL_GETINFO = URL_HEAD + "m_getInfo.php";
 
 
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
-    public static final String MOBILE = "mobile";
-    public static final String TRUE = "True";
 }

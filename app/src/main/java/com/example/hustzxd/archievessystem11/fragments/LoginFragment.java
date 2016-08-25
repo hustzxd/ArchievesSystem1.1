@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -183,15 +182,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 //将请求参数名与参数值放入map中
                 map.put(Constant.USERNAME, Constant.username);
                 map.put(Constant.PASSWORD, mPassword);
-                map.put(Constant.MOBILE, Constant.TRUE);
                 return map;
             }
         };
         //设置请求的Tag标签，可以在全局请求队列中通过Tag标签进行请求的查找
         request.setTag("loginPost");
         //将请求加入全局队列中
-        MyApplication.getmQueues().
-
-                add(request);
+        MyApplication.getmQueues().add(request);
     }
 }

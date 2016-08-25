@@ -58,40 +58,40 @@ public class HelloFragment extends Fragment implements View.OnClickListener {
     }
 
     private void volleyPost() {
-
-        String url = Constant.URL_LOGOUT;
-        Log.d("sss-url", url);
-        StringRequest request = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String s) {//s为请求返回的字符串数据
-                        Log.i("sss-response", s);
-                        Utils.toast(getActivity(), "登出成功,3秒后返回到登录界面");
-                        new jumpToLoginDelay().execute(3000);//参数为延迟的时间
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        Log.i("sss-errorResponse", volleyError.toString());
-                    }
-                }) {
-            //改写 cookie
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                if (MyApplication.cookies != null && MyApplication.cookies.length() > 0) {
-                    HashMap<String, String> headers = new HashMap<>();
-                    headers.put("cookie", MyApplication.cookies);
-                    Log.d("sss-cookie", headers.toString());
-                    return headers;
-                }
-                return super.getHeaders();
-            }
-        };
-        //设置请求的Tag标签，可以在全局请求队列中通过Tag标签进行请求的查找
-        request.setTag("helloPost");
-        //将请求加入全局队列中
-        MyApplication.getmQueues().add(request);
+//
+//        String url = Constant.URL_LOGOUT;
+//        Log.d("sss-url", url);
+//        StringRequest request = new StringRequest(Request.Method.POST, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String s) {//s为请求返回的字符串数据
+//                        Log.i("sss-response", s);
+//                        Utils.toast(getActivity(), "登出成功,3秒后返回到登录界面");
+//                        new jumpToLoginDelay().execute(3000);//参数为延迟的时间
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError volleyError) {
+//                        Log.i("sss-errorResponse", volleyError.toString());
+//                    }
+//                }) {
+//            //改写 cookie
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                if (MyApplication.cookies != null && MyApplication.cookies.length() > 0) {
+//                    HashMap<String, String> headers = new HashMap<>();
+//                    headers.put("cookie", MyApplication.cookies);
+//                    Log.d("sss-cookie", headers.toString());
+//                    return headers;
+//                }
+//                return super.getHeaders();
+//            }
+//        };
+//        //设置请求的Tag标签，可以在全局请求队列中通过Tag标签进行请求的查找
+//        request.setTag("helloPost");
+//        //将请求加入全局队列中
+//        MyApplication.getmQueues().add(request);
     }
 
     /**

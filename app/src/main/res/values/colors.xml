@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#061159</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="label_round_orange">#FACCB1</color>
+    <color name="label_orange">#e9faede6</color>
+    <color name="label_grey">#f1efee</color>
+    <color name="btn0">#FF061159</color>
+    <color name="btn1">#FF0b1d8e</color>
 </resources>

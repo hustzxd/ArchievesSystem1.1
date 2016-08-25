@@ -28,13 +28,13 @@ public class reader {
 			AudioManager.STREAM_RING, 0);
 	static public String m_strPCEPC = "";
 	// 消息标示
-	static public int msgreadepc = 1;// 读取标签EPC：
-	static public int msgreadwrireepc = 2;// 读标签
-	static public int msgreadwrite = 3;// 写标签
-	static public int readover = 4;// 写标签
-	static public int editepcsmsg = 5;
-	static public int locklable = 6;
-	static public int killlable = 7;
+	static public final int msgreadepc = 1;// 读取标签EPC：
+	static public final int msgreadwrireepc = 2;// 读标签
+	static public final int msgreadwrite = 3;// 写标签
+	static public final int readover = 4;// 写标签
+	static public final int editepcsmsg = 5;
+	static public final int locklable = 6;
+	static public final int killlable = 7;
 
 	/**
 	 * 初始化设备

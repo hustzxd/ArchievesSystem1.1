@@ -7,17 +7,26 @@
     <TextView
         android:id="@+id/tv_check"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="check"/>
+        android:layout_height="50dp"
+        android:text="Check"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:background="@drawable/shape_label1"/>
 
     <Button
         android:id="@+id/btn_check"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="开始盘点"/>
+        android:layout_width="240dp"
+        android:layout_height="38dp"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/shape_lable3"
+        android:text="开始盘点"
+        android:layout_marginTop="15dp"
+        android:layout_gravity="center"/>
 
     <ListView
         android:id="@+id/list_view_epc"
+        android:layout_marginTop="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></ListView>
 </LinearLayout>
